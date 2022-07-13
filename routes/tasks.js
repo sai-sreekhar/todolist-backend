@@ -58,7 +58,7 @@ router.post('/newTask', async(req,res) => {
     }
 })
 
-router.post('/updateTask/:taskId', async(req,res) => {
+router.patch('/updateTask/:taskId', async(req,res) => {
     const { error } = validateTask(req.body);
     if (error) return res.status(400).send({"isSucess" : false,"err" : error.details[0].message});
 
@@ -101,7 +101,7 @@ router.post('/updateTask/:taskId', async(req,res) => {
     }
 })
 
-router.post('/completeTask/:taskId', async(req,res) => {
+router.patch('/completeTask/:taskId', async(req,res) => {
     try {
         const user = await User.find({"_id" : mongodb.ObjectId(req.query.userId)});
         if (user.length == 0) {
