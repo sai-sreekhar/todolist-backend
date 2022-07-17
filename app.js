@@ -2,9 +2,16 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const Joi = require("joi");
+const cors = require('cors');
 require("dotenv/config");
 
 const app = express();
+
+
+app.use(cors({
+  origin: "http://localhost:3000"
+}))
+
 
 app.use(bodyParser.json());
 
@@ -18,7 +25,7 @@ mongoose.connect(process.env.DB_CONNECTION,{ useNewUrlParser: true },() => {
     console.log("Connected to DB");
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 app.listen(port, (req, res) => {
   console.log(`Listening on port ${port}...`);
 });

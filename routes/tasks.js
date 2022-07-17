@@ -2,7 +2,7 @@ const express = require('express');
 const Joi = require('joi');
 const router = express.Router();
 var mongodb = require('mongodb');
-const { db } = require('../models/Task');
+const { db, update } = require('../models/Task');
 const Task = require("../models/Task");
 const User = require("../models/User");
 
@@ -20,7 +20,7 @@ router.get('/', async(req,res) => {
     }
 
     try {
-        const tasks = await Task.find({"userId" : mongodb.ObjectId(req.query.userId)},{"_id":0,"task":1,"isCompleted":1,"time":1});
+        const tasks = await Task.find({"userId" : mongodb.ObjectId(req.query.userId)});
         res.send({"isSucess" : true, "data" : tasks});
     } catch (error) {
         console.log("Getting Tasks of user failed",error);
@@ -59,9 +59,9 @@ router.post('/newTask', async(req,res) => {
 })
 
 router.patch('/updateTask/:taskId', async(req,res) => {
-    const { error } = validateTask(req.body);
-    if (error) return res.status(400).send({"isSucess" : false,"err" : error.details[0].message});
-
+    // const { error } = validateTask(req.body);
+    // if (error) return res.status(400).send({"isSucess" : false,"err" : error.details[0].message});
+    let updated = false;
     try {
         const user = await User.find({"_id" : mongodb.ObjectId(req.query.userId)});
         if (user.length == 0) {
@@ -86,19 +86,43 @@ router.patch('/updateTask/:taskId', async(req,res) => {
         return;
     }
     
-    try {
-        db.collection("tasks").updateOne(
-            {"_id" : mongodb.ObjectId(req.params.taskId)},
-            {
-                $set : {
-                    "task" : req.body.task
-                }
-        })
-        res.send({"isSucess" : true,"taskId" : req.params.taskId})
-    } catch (error) {
-        console.log("Updating New Task Failed",error);
-        res.status(500).send({"isSucess" : false,"err" : error});
+    if (req.body.task) {
+        updated = true;
+        try {
+            db.collection("tasks").updateOne(
+                {"_id" : mongodb.ObjectId(req.params.taskId)},
+                {
+                    $set : {
+                        "task" : req.body.task
+                    }
+            })
+            res.send({"isSucess" : true,"taskId" : req.params.taskId})
+        } catch (error) {
+            console.log("Updating Task Failed",error);
+            res.status(500).send({"isSucess" : false,"err" : error});
+        }
     }
+    else if(req.body.isCompleted != undefined) {
+        updated = true;
+        try {
+            db.collection("tasks").updateOne(
+                {"_id" : mongodb.ObjectId(req.params.taskId)},
+                {
+                    $set : {
+                        "isCompleted" : !req.body.isCompleted
+                    }
+            })
+            res.send({"isSucess" : true,"taskId" : req.params.taskId})
+        } catch (error) {
+            console.log("Updating Task Failed",error);
+            res.status(500).send({"isSucess" : false,"err" : error});
+        }
+    }
+
+    if (!updated) {
+        res.status(400).send('Bad request');
+    }
+
 })
 
 router.patch('/completeTask/:taskId', async(req,res) => {
