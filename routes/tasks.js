@@ -15,7 +15,7 @@ router.get('/', async(req,res) => {
         }
     } catch (error) {
         console.log("Finding user failed",error);
-        res.status(500).send({"isSucess" : false,"err" : error});
+        res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
         return;
     }
 
@@ -24,7 +24,7 @@ router.get('/', async(req,res) => {
         res.send({"isSucess" : true, "data" : tasks});
     } catch (error) {
         console.log("Getting Tasks of user failed",error);
-        res.status(500).send({"isSucess" : false,"err" : error});
+        res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
     }
 })
 
@@ -40,7 +40,7 @@ router.post('/newTask', async(req,res) => {
         }
     } catch (error) {
         console.log("Finding user failed",error);
-        res.status(500).send({"isSucess" : false,"err" : error});
+        res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
         return;
     }
 
@@ -54,7 +54,7 @@ router.post('/newTask', async(req,res) => {
         res.send({"isSucess" : true,"taskId" : newTask._id})
     } catch (error) {
         console.log("Creating New Task Failed",error);
-        res.status(500).send({"isSucess" : false,"err" : error});
+        res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
     }
 })
 
@@ -70,7 +70,7 @@ router.patch('/updateTask/:taskId', async(req,res) => {
         }
     } catch (error) {
         console.log("Finding user failed",error);
-        res.status(500).send({"isSucess" : false,"err" : error});
+        res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
         return;
     }
 
@@ -82,7 +82,7 @@ router.patch('/updateTask/:taskId', async(req,res) => {
         }
     } catch (error) {
         console.log("Finding Task failed",error);
-        res.status(500).send({"isSucess" : false,"err" : error});
+        res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
         return;
     }
     
@@ -99,7 +99,7 @@ router.patch('/updateTask/:taskId', async(req,res) => {
             res.send({"isSucess" : true,"taskId" : req.params.taskId})
         } catch (error) {
             console.log("Updating Task Failed",error);
-            res.status(500).send({"isSucess" : false,"err" : error});
+            res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
         }
     }
     else if(req.body.isCompleted != undefined) {
@@ -115,7 +115,7 @@ router.patch('/updateTask/:taskId', async(req,res) => {
             res.send({"isSucess" : true,"taskId" : req.params.taskId})
         } catch (error) {
             console.log("Updating Task Failed",error);
-            res.status(500).send({"isSucess" : false,"err" : error});
+            res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
         }
     }
 
@@ -146,7 +146,7 @@ router.patch('/completeTask/:taskId', async(req,res) => {
         }
     } catch (error) {
         console.log("Finding Task failed",error);
-        res.status(500).send({"isSucess" : false,"err" : error});
+        res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
         return;
     }
     
@@ -161,7 +161,7 @@ router.patch('/completeTask/:taskId', async(req,res) => {
         res.send({"isSucess" : true,"taskId" : req.params.taskId})
     } catch (error) {
         console.log("Completing Task Failed",error);
-        res.status(500).send({"isSucess" : false,"err" : error});
+        res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
     }
 })
 
@@ -174,7 +174,7 @@ router.delete('/deleteTask/:taskId', async(req,res) => {
         }
     } catch (error) {
         console.log("Finding user failed",error);
-        res.status(500).send({"isSucess" : false,"err" : error});
+        res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
         return;
     }
 
@@ -186,7 +186,7 @@ router.delete('/deleteTask/:taskId', async(req,res) => {
         }
     } catch (error) {
         console.log("Finding Task failed",error);
-        res.status(500).send({"isSucess" : false,"err" : error});
+        res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
         return;
     }
 
@@ -195,7 +195,7 @@ router.delete('/deleteTask/:taskId', async(req,res) => {
         res.send({"isSucess" : true,"taskId" : req.params.taskId})
     } catch (error) {
         console.log("Deleting Task Failed",error);
-        res.status(500).send({"isSucess" : false,"err" : error});
+        res.status(500).send({"isSucess" : false,"err" : "Internal Server Error"});
     }
 })
 

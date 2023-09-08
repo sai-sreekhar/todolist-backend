@@ -20,10 +20,13 @@ router.post("/signin", async (req, res) => {
       .send({ isSucess: false, err: error.details[0].message });
 
   try {
-    const user = await User.find(
-      { email: req.body.email },
-      { password: req.body.password }
-    );
+    console.log(req.body);
+    const user = await User.find({
+      email: req.body.email,
+      password: req.body.password,
+    });
+    console.log(user);
+
     if (user.length == 0) {
       res.status(401).send({ isSucess: false, err: "Authentication Failed" });
     } else {
@@ -31,7 +34,7 @@ router.post("/signin", async (req, res) => {
     }
   } catch (error) {
     console.log("SignIn Failed", error);
-    res.status(500).send({ isSucess: false, err: error });
+    res.status(500).send({ isSucess: false, err: "Internal Server Error" });
   }
 });
 
@@ -66,7 +69,7 @@ router.post("/signup", async (req, res) => {
     res.send({ isSucess: true, userId: newUser._id });
   } catch (error) {
     console.log("SignUp Failed", error);
-    res.status(500).send({ isSucess: false, err: error });
+    res.status(500).send({ isSucess: false, err: "Internal Server Error" });
   }
 });
 
